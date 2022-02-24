@@ -1,11 +1,15 @@
 FROM python:3.9-alpine
-MAINTAINER Anfa App Developer Ltd
+LABEL com.anfadevltd.image.authors="mouadls@gmail.com"
 
 ENV PYTHONUNBUFFERD 1
 
-COPY ./requirement.txt /requirement.txt
-RUN pip install -r requirement.txt
+RUN apk add --update --no-cache postgresql-client
+RUN apk add --update --no-cache --virtual .tmp-build-deps \ 
+      gcc libc-dev linux-headers postgresql-dev
+Run apk dev .tmp-build-deps
 
+COPY ./requirement.txt /requirement.txt
+RUN pip install -r /requirement.txt
 
 RUN mkdir /app 
 WORKDIR /app
